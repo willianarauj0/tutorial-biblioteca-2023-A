@@ -64,4 +64,25 @@ public class LivroController {
         
         return "redirect:/livro/list";
     }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(
+        @RequestParam("id") int id,
+        @RequestParam("titulo") String titulo,
+        @RequestParam("isbn") String isbn,
+        @RequestParam("genero") int idGenero
+    ){
+        Optional<Livro> livro = livroRepo.findById(id);
+
+        if(livro.isPresent()) {
+            livro.get().setTitulo(titulo);
+            livro.get().setIsbn(isbn);
+            livro.get().setGenero(generoRepo.findById(idGenero).get());
+
+            livroRepo.save(livro.get());
+        }
+
+        return "redirect:/livro/list";
+    }
+
  }
